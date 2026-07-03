@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Log In{% endblock %}
+{% block content %}
+<div class="auth-card">
+  <h2>Log In</h2>
+  <form method="POST" action="{{ url_for('auth.login') }}">
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" value="{{ username or '' }}" required autofocus>
+
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required>
+
+    <button type="submit" class="btn btn-primary">Log In</button>
+  </form>
+  <p class="auth-switch">No account yet? <a href="{{ url_for('auth.register') }}">Register here</a></p>
+</div>
+{% endblock %}

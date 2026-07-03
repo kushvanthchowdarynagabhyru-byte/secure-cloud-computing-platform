@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h2>My Files</h2>
+  <a href="{{ url_for('files.upload') }}" class="btn btn-primary">+ Upload File</a>
+</div>
+
+{% if files %}
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Filename</th>
+      <th>Size</th>
+      <th>Uploaded</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for f in files %}
+    <tr>
+      <td>{{ f.original_filename }}</td>
+      <td>{{ (f.size_bytes / 1024) | round(1) }} KB</td>
+      <td>{{ f.uploaded_at.strftime('%Y-%m-%d %H:%M') }}</td>
+      <td class="actions">
+        <a href="{{ url_for('files.download', file_id=f.id) }}" class="btn btn-small">Download</a>
+        <form method="POST" action="{{ url_for('files.delete', file_id=f.id) }}" class="inline-form"
+              onsubmit="return confirm('Delete this file permanently?');">
+          <button type="submit" class="btn btn-small btn-danger">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty-state">You haven't uploaded any files yet. <a href="{{ url_for('files.upload') }}">Upload your first file</a>.</p>
+{% endif %}
+{% endblock %}

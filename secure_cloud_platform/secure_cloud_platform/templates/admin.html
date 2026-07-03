@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Admin Panel{% endblock %}
+{% block content %}
+<h2>Admin Panel</h2>
+
+<section class="admin-section">
+  <h3>All Users ({{ users|length }})</h3>
+  <table class="data-table">
+    <thead><tr><th>Username</th><th>Email</th><th>Role</th><th>Joined</th></tr></thead>
+    <tbody>
+      {% for u in users %}
+      <tr>
+        <td>{{ u.username }}</td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.role }}</td>
+        <td>{{ u.created_at.strftime('%Y-%m-%d') }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section class="admin-section">
+  <h3>All Files ({{ files|length }})</h3>
+  <table class="data-table">
+    <thead><tr><th>Filename</th><th>Owner</th><th>Size</th><th>Uploaded</th><th>Actions</th></tr></thead>
+    <tbody>
+      {% for f in files %}
+      <tr>
+        <td>{{ f.original_filename }}</td>
+        <td>{{ f.owner.username }}</td>
+        <td>{{ (f.size_bytes / 1024) | round(1) }} KB</td>
+        <td>{{ f.uploaded_at.strftime('%Y-%m-%d %H:%M') }}</td>
+        <td><a href="{{ url_for('files.download', file_id=f.id) }}" class="btn btn-small">Download</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section class="admin-section">
+  <h3>Recent Audit Log</h3>
+  <table class="data-table">
+    <thead><tr><th>Time</th><th>User</th><th>Action</th><th>Detail</th><th>IP</th></tr></thead>
+    <tbody>
+      {% for log in logs %}
+      <tr>
+        <td>{{ log.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+        <td>{{ log.username }}</td>
+        <td>{{ log.action }}</td>
+        <td>{{ log.detail }}</td>
+        <td>{{ log.ip_address }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}
